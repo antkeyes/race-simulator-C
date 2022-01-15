@@ -37,9 +37,11 @@ void printCongratulation(struct Race race) {
 // Logic functions section
 int calculateTimeToCompleteLap(void) {
     int speed, acceleration, nerves;
-    speed = 3;
-    acceleration = 2;
-    nerves = 1;
+
+    
+    speed = (rand() % 3) +1;
+    acceleration = (rand() % 3) +1;
+    nerves = (rand() % 3) +1;
 
     return speed + acceleration + nerves;
 
@@ -66,14 +68,42 @@ void updateFirstPlace(struct Race* racePointer, struct RaceCar* raceCar1Pointer,
 
 }
 
+void startRace(struct RaceCar* raceCar1Pointer, struct RaceCar* raceCar2Pointer) {
+    struct Race race = {
+        .numberOfLaps = 5,
+        .currentLap = 1,
+        .firstPlaceDriverName = "",
+        .firstPlaceRaceCarColor = ""
+    };
+    
+    for (int i = 0; i <= race.numberOfLaps; i++) {
+        updateRaceCar(raceCar1Pointer);
+        updateRaceCar(raceCar2Pointer);
+        updateFirstPlace(&race, raceCar1Pointer, raceCar2Pointer);
+        printFirstPlaceAfterLap(race);
+    }
+
+    printCongratulation(race);
+
+}
+
 int main() {
 	srand(time(0));
 
-    printf("%s", printIntro());
-    printf("%s", printCountDown());
+    struct RaceCar raceCar1 = {
+        .driverName = "Ant",
+        .raceCarColor = "Green",
+        .totalLapTime = 0
+    };
 
-    struct Race race1 = {4, 2, "Ant", "green"};
-    printFirstPlaceAfterLap(race1);
-    printCongratulation(race1);
+    struct RaceCar raceCar2 = {
+        .driverName = "Taylor",
+        .raceCarColor = "Black",
+        .totalLapTime = 0
+    };
+
+    printIntro();
+    startRace(&raceCar1, &raceCar2);
+
 
 };
